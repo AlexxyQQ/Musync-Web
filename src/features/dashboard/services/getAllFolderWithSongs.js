@@ -1,11 +1,13 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import { BaseURL, InitialLoginURL } from "../../../configs/ApiEndpoints";
-import { LoginRoute } from "../../../configs/Routes";
+import {
+  BaseURL,
+  GetAllFolderWithSongsURL,
+} from "../../../configs/ApiEndpoints";
 
-async function initialLogin(navigate) {
+const getAllFolderWithSongs = async () => {
   try {
-    const response = await axios.get(`${BaseURL}${InitialLoginURL}`, {
+    const response = await axios.get(`${BaseURL}${GetAllFolderWithSongsURL}`, {
       headers: {
         "Content-Type": "application/json",
         apisecret: "Apple",
@@ -13,7 +15,7 @@ async function initialLogin(navigate) {
       },
     });
 
-    return response.data.data.user;
+    return response.data.data;
   } catch (error) {
     if (error.response) {
       // The request was made, but the server responded with an error status code
@@ -25,9 +27,7 @@ async function initialLogin(navigate) {
       // Something else happened in making the request that triggered an error
       toast.error("Error occurred while fetching data: " + error.message);
     }
-
-    navigate(LoginRoute);
   }
-}
+};
 
-export default initialLogin;
+export default getAllFolderWithSongs;

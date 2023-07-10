@@ -1,6 +1,9 @@
 const initialState = {
   loggedUser: {},
   errors: {},
+  allFolderWithSongs: {},
+  selectedFolder: "",
+  selectedSongList: [],
 };
 
 const dashboardReducer = (state = initialState, action) => {
@@ -10,12 +13,27 @@ const dashboardReducer = (state = initialState, action) => {
         ...state,
         loggedUser: action.loggedUser,
       };
+    case "ALL_FOLDER_WITH_SONGS":
+      return {
+        ...state,
+        allFolderWithSongs: action.allFolderWithSongs,
+      };
+    case "SELECTED_FOLDER":
+      return {
+        ...state,
+        selectedFolder: action.selectedFolder,
+      };
+    case "SELECTED_SONG_LIST":
+      return {
+        ...state,
+        selectedSongList: action.selectedSongList,
+      };
     case "SET_ERRORS":
       return {
         ...state,
         errors: action.errors,
       };
-    case "RESET_USER":
+    case "RESET_STATE":
       return initialState;
     default:
       return state;
