@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BaseURL, LoginURL } from "../../../configs/ApiEndpoints";
 import { DefaultHeaders } from "../../../configs/Constants";
+import { DashboardRoute } from "../../../configs/Routes";
 
 const LoginFormController = async (formData) => {
   try {
@@ -16,7 +17,7 @@ const LoginFormController = async (formData) => {
       // save token in local storage
       localStorage.setItem("token", response.data.data.token);
       // redirect to home page
-      window.location.href = "/dashboard";
+      window.location.href = DashboardRoute;
     } else {
       // Show toast for other status codes
       toast.error("An error occurred while processing your request.", {
