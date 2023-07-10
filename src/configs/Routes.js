@@ -1,1 +1,2 @@
-export const LoginRoute = "/";
+export const LoginRoute = "/login";
+export const SignupRoute = "/signup";
