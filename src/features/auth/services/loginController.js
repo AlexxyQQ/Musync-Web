@@ -1,19 +1,14 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BaseURL, LoginURL } from "../../../configs/ApiEndpoints";
+import { DefaultHeaders } from "../../../configs/Constants";
 
 const LoginFormController = async (formData) => {
   try {
-    const response = await axios.post(
-      "http://localhost:3001/api/users/login/",
-      formData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          apisecret: "Apple",
-        },
-      }
-    );
+    const response = await axios.post(`${BaseURL}${LoginURL}`, formData, {
+      headers: DefaultHeaders,
+    });
 
     if (response.status === 200) {
       // Show toast for successful sign-up
