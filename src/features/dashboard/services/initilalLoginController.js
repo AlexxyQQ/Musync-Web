@@ -1,8 +1,9 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { BaseURL, InitialLoginURL } from "../../../configs/ApiEndpoints";
+import { LoginRoute } from "../../../configs/Routes";
 
-async function initialLogin(navigate, setUser) {
+async function initialLogin(navigate, setUser, dispatch) {
   try {
     const response = await axios.get(`${BaseURL}${InitialLoginURL}`, {
       headers: {
@@ -12,7 +13,7 @@ async function initialLogin(navigate, setUser) {
       },
     });
 
-    setUser(response.data.data.user);
+    return response.data.data.user;
   } catch (error) {
     if (error.response) {
       // The request was made, but the server responded with an error status code
@@ -25,7 +26,7 @@ async function initialLogin(navigate, setUser) {
       toast.error("Error occurred while fetching data: " + error.message);
     }
 
-    navigate("/login");
+    navigate(LoginRoute);
   }
 }
 

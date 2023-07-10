@@ -6,11 +6,12 @@ import DashboardView from "./features/dashboard/views/Dashboard";
 import { DashboardRoute, LoginRoute, SignupRoute } from "./configs/Routes";
 import { Provider } from "react-redux";
 import authStore from "./features/auth/store/authStore";
+import dashboardStore from "./features/dashboard/store/dashboardStore";
 
 const App = () => {
   return (
-    <>
-      <Provider store={authStore}>
+    <Provider store={authStore}>
+      <Provider store={dashboardStore}>
         <BrowserRouter>
           <Routes>
             <Route path={LoginRoute} element={<LoginView />} />
@@ -19,7 +20,7 @@ const App = () => {
           </Routes>
         </BrowserRouter>
       </Provider>
-    </>
+    </Provider>
   );
 };
 
