@@ -17,10 +17,7 @@ const FolderList = ({
             <div className="h-20 w-20 bg-blue-300 rounded-lg">
               <img
                 className="h-20 w-20 rounded-lg"
-                src={`${ImageBaseURL}${songs[0].serverUrl.substring(
-                  0,
-                  songs[0].serverUrl.lastIndexOf("/")
-                )}/${songs[0].albumArtUrl}`}
+                src={`${ImageBaseURL}/${songs[0].albumArtUrl}`}
                 alt="Folder"
               />
             </div>

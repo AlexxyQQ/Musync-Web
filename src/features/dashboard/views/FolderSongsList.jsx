@@ -49,10 +49,7 @@ const FolderSongsList = ({ folderSongs, selectedFolder }) => {
       <div className="flex flex-row items-center space-x-6">
         <img
           className="h-64 w-64 rounded-lg shadow-md"
-          src={`${ImageBaseURL}${folderSongs[0].serverUrl.substring(
-            0,
-            folderSongs[0].serverUrl.lastIndexOf("/")
-          )}/${folderSongs[0].albumArtUrl}`}
+          src={`${ImageBaseURL}/${folderSongs[0].albumArtUrl}`}
           alt="Folder"
         />
         <div className="flex flex-col">
@@ -99,12 +96,7 @@ const FolderSongsList = ({ folderSongs, selectedFolder }) => {
                     <div className="flex items-center">
                       <img
                         className="h-10 w-10 rounded-md mr-2"
-                        src={`${ImageBaseURL}${folderSongs[
-                          index
-                        ].serverUrl.substring(
-                          0,
-                          folderSongs[index].serverUrl.lastIndexOf("/")
-                        )}/${folderSongs[index].albumArtUrl}`}
+                        src={`${ImageBaseURL}/${folderSongs[index].albumArtUrl}`}
                         alt={song.title}
                       />
                       <span>{song.title}</span>

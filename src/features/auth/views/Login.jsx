@@ -7,7 +7,8 @@ import LoginFormController from "../services/loginController";
 import { ToastContainer } from "react-toastify";
 
 const LoginView = () => {
-  const { password, email, errors } = useSelector((state) => state);
+  // Assuming your Redux state is structured like this:
+  const { email, password, errors } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
@@ -17,7 +18,7 @@ const LoginView = () => {
 
     if (Object.keys(validationErrors).length === 0) {
       LoginFormController(formData);
-      dispatch(resetFields());
+      dispatch(resetFields()); // Assuming resetFields() correctly resets the email and password fields in the Redux state
     } else {
       dispatch(setErrors(validationErrors));
     }
@@ -35,7 +36,7 @@ const LoginView = () => {
           label="Email"
           id="email"
           variant="outlined"
-          value={email}
+          value={email || ""} // Add a fallback value to avoid "controlled component" warning
           onChange={(e) => handleChange("email", e.target.value)}
           error={!!errors.email}
           helperText={errors.email}
@@ -46,7 +47,7 @@ const LoginView = () => {
           label="Password"
           id="password"
           variant="outlined"
-          value={password}
+          value={password || ""} // Add a fallback value to avoid "controlled component" warning
           onChange={(e) => handleChange("password", e.target.value)}
           error={!!errors.password}
           helperText={errors.password}

@@ -14,12 +14,14 @@ import FolderSongsList from "../views/FolderSongsList";
 
 const Dashboard = () => {
   const { loggedUser, allFolderWithSongs, selectedFolder, selectedSongList } =
-    useSelector((state) => state);
+    useSelector((state) => state.dashboard);
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   const fetchUser = async () => {
     try {
-      const user = await initialLogin();
+      const user = await initialLogin(navigate);
       const apiAllFolderWithSongs = await getAllFolderWithSongs();
 
       dispatch(setUser(user));
