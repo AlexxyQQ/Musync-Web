@@ -25,6 +25,7 @@ const App = () => {
           <Route path={LoginRoute} element={<LoginView />} />
           <Route path={SignupRoute} element={<SignupView />} />
           <Route path={DashboardRoute} element={<DashboardView />} />
+          <Route path='/' element={<DashboardView />} />
         </Routes>
       </BrowserRouter>
     </Provider>

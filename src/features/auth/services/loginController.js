@@ -3,9 +3,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BaseURL, LoginURL } from "../../../configs/ApiEndpoints";
 import { DefaultHeaders } from "../../../configs/Constants";
-import { DashboardRoute } from "../../../configs/Routes";
+import { DashboardRoute, LoginRoute } from "../../../configs/Routes";
 
-const LoginFormController = async (formData) => {
+const LoginFormController = async (formData, navigate) => {
   try {
     const response = await axios.post(`${BaseURL}${LoginURL}`, formData, {
       headers: DefaultHeaders,
@@ -23,6 +23,7 @@ const LoginFormController = async (formData) => {
       toast.error("An error occurred while processing your request.", {
         autoClose: 1000,
       });
+      navigate(DashboardRoute);
     }
   } catch (error) {
     // Handle errors

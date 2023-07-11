@@ -5,11 +5,13 @@ import { resetFields, setErrors, setField } from "../store/action/authAction";
 import { LoginFormValidator } from "../../../utils/formValidators/LoginFormValidator";
 import LoginFormController from "../services/loginController";
 import { ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const LoginView = () => {
   // Assuming your Redux state is structured like this:
   const { email, password, errors } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,7 +19,7 @@ const LoginView = () => {
     const validationErrors = LoginFormValidator(formData);
 
     if (Object.keys(validationErrors).length === 0) {
-      LoginFormController(formData);
+      LoginFormController(formData, navigate);
       dispatch(resetFields()); // Assuming resetFields() correctly resets the email and password fields in the Redux state
     } else {
       dispatch(setErrors(validationErrors));

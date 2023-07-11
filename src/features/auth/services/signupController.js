@@ -3,8 +3,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BaseURL, SignupURL } from "../../../configs/ApiEndpoints";
 import { DefaultHeaders } from "../../../configs/Constants";
+import { LoginRoute } from "../../../configs/Routes";
 
-const SignupFormController = async (formData) => {
+const SignupFormController = async (formData, navigate) => {
   try {
     const response = await axios.post(`${BaseURL}${SignupURL}`, formData, {
       headers: DefaultHeaders,
@@ -13,6 +14,7 @@ const SignupFormController = async (formData) => {
     if (response.status === 200) {
       // Show toast for successful sign-up
       toast.success("Sign up successful!", { autoClose: 1000 });
+      navigate(LoginRoute);
     } else {
       // Show toast for other status codes
       toast.error("An error occurred while processing your request.", {

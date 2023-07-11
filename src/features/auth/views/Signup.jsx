@@ -4,17 +4,19 @@ import { SignupFormValidator } from "../../../utils/formValidators/SignupFormVal
 import SignupFormController from "../services/signupController";
 import { resetFields, setErrors, setField } from "../store/action/authAction";
 import { ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const SignupView = () => {
   const { username, password, email, confirmPassword, errors } = useSelector(
-    (state) => state
+    (state) => state.auth
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = { username, email, password, confirmPassword };
-    const validationErrors = SignupFormValidator(formData);
+    const validationErrors = SignupFormValidator(formData, navigate);
 
     if (Object.keys(validationErrors).length === 0) {
       SignupFormController(formData);
