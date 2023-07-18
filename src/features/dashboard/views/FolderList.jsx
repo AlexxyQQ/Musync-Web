@@ -1,5 +1,4 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import { ImageBaseURL } from "../../../configs/ApiEndpoints";
 
 const FolderList = ({
@@ -34,12 +33,6 @@ const FolderList = ({
               {folder.split("/")[folder.split("/").length - 1]}
             </button>
           </div>
-
-          {/* <ul>
-            {songs.map((song, index) => (
-              <li key={index}>{song}</li>
-            ))}
-          </ul> */}
         </div>
       ))}
     </div>

@@ -4,6 +4,7 @@ const initialState = {
   allFolderWithSongs: {},
   selectedFolder: "",
   selectedSongList: [],
+  selectedSongIndex: null,
 };
 
 const dashboardReducer = (state = initialState, action) => {
@@ -27,6 +28,11 @@ const dashboardReducer = (state = initialState, action) => {
       return {
         ...state,
         selectedSongList: action.selectedSongList,
+      };
+    case "SELECTED_SONG_INDEX":
+      return {
+        ...state,
+        selectedSongIndex: action.selectedSongIndex,
       };
     case "SET_ERRORS":
       return {

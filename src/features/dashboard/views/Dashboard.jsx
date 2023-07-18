@@ -36,9 +36,9 @@ const Dashboard = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <div className="fixed top-0 left-0 w-full h-full bg-fixed text-white">
       <div className="flex flex-row">
-        <div className="h-screen flex-auto bg-red-300 ">
+        <div className="h-screen flex-auto bg-gray-800 sticky top-0">
           <FolderList
             foldersWithSongs={allFolderWithSongs}
             setFolderSongs={setSelectedSongList}
@@ -46,7 +46,7 @@ const Dashboard = () => {
             dispatch={dispatch}
           />
         </div>
-        <div className="h-screen flex-auto w-[60%] bg-orange-300">
+        <div className="h-screen flex-auto w-[60%] bg-gray-900 overflow-y-auto">
           {selectedFolder && (
             <FolderSongsList
               folderSongs={selectedSongList}

@@ -18,6 +18,11 @@ export const setSelectedSongList = (selectedSongList) => ({
   selectedSongList,
 });
 
+export const setSelectedSongIndex = (selectedSongIndex) => ({
+  type: "SELECTED_SONG_INDEX",
+  selectedSongIndex,
+});
+
 export const setErrors = (errors) => ({
   type: "SET_ERRORS",
   errors,

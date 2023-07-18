@@ -1,4 +1,3 @@
-import React from "react";
 import { AiOutlineClockCircle, AiOutlinePlayCircle } from "react-icons/ai";
 import {
   Table,
@@ -9,7 +8,17 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-import { BaseURL, ImageBaseURL } from "../../../configs/ApiEndpoints";
+import { ImageBaseURL } from "../../../configs/ApiEndpoints";
+// import MusicPlayer from "./MusicPlayer";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedSongIndex } from "../store/action/dashboardAction";
+// import NowPlaying from "../../nowplaying/views/NowPlaying";
+import Player from "../../nowPlaying/views/player";
+import {
+  setPlaying,
+  setSongIndex,
+} from "../../nowPlaying/redux/actions/audioPlayerActions";
+import { useRef } from "react";
 
 const formatDuration = (durationInSeconds) => {
   const days = Math.floor(durationInSeconds / 86400);
@@ -34,13 +43,18 @@ const formatDate = (dateString) => {
 };
 
 const FolderSongsList = ({ folderSongs, selectedFolder }) => {
-  console.log(selectedFolder);
+  const { selectedSongIndex } = useSelector((state) => state.dashboard);
+  const dispatch = useDispatch();
+  const audioRef = useRef();
 
   // Calculate the total duration in seconds
   const totalDurationInSeconds = folderSongs.reduce(
     (total, song) => total + song.duration / 1000,
     0
   );
+  // to show the MusicPlayer component only when a song is selected
+  const musicPlayerHidden =
+    selectedSongIndex !== null ? "block sticky bottom-0" : "hidden";
 
   const totalDurationFormatted = formatDuration(totalDurationInSeconds);
 
@@ -49,7 +63,7 @@ const FolderSongsList = ({ folderSongs, selectedFolder }) => {
       <div className="flex flex-row items-center space-x-6">
         <img
           className="h-64 w-64 rounded-lg shadow-md"
-          src={`${ImageBaseURL}/${folderSongs[0].albumArtUrl}`}
+          src={`${ImageBaseURL}${folderSongs[0].albumArtUrl}`}
           alt="Folder"
         />
         <div className="flex flex-col">
@@ -83,20 +97,28 @@ const FolderSongsList = ({ folderSongs, selectedFolder }) => {
             </TableHead>
             <TableBody>
               {folderSongs.map((song, index) => (
-                <TableRow key={index} onClick={() => console.log(song.title)}>
-                  <TableCell className="relative">
-                    <div className="group cursor-pointer">
-                      <div className="hidden group-hover:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0">
-                        <AiOutlinePlayCircle className="text-white text-4xl" />
-                      </div>
-                      {index + 1}
+                <TableRow
+                  key={index}
+                  className="hover:bg-gray-100 transition duration-200 ease-out"
+                  onClick={() => {
+                    dispatch(setSongIndex(index));
+                    audioRef.current?.play();
+                    dispatch(setPlaying(true));
+                  }}
+                >
+                  <TableCell className="relative group">
+                    <div className="group-hover:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 hover:opacity-100">
+                      <AiOutlinePlayCircle className="h-6 w-6" />
                     </div>
+                    <p className="group-hover:hidden hover:opacity-0">
+                      {index + 1}
+                    </p>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center">
                       <img
                         className="h-10 w-10 rounded-md mr-2"
-                        src={`${ImageBaseURL}/${folderSongs[index].albumArtUrl}`}
+                        src={`${ImageBaseURL}${folderSongs[index].albumArtUrl}`}
                         alt={song.title}
                       />
                       <span>{song.title}</span>
@@ -110,6 +132,12 @@ const FolderSongsList = ({ folderSongs, selectedFolder }) => {
             </TableBody>
           </Table>
         </TableContainer>
+        <div>
+          <Player songs={folderSongs} audioRef={audioRef} />
+        </div>
+        {/* <div className={musicPlayerHidden}>
+          <NowPlaying index={selectedSongIndex} tracks={folderSongs} />
+        </div> */}
       </div>
     </div>
   );
