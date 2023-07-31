@@ -18,6 +18,7 @@ const initialState = {
   audioRef: null,
   timeProgress: 0,
   duration: 0,
+  socket: null,
 };
 
 const audioPlayerReducer = (state = initialState, action) => {
@@ -89,6 +90,17 @@ const audioPlayerReducer = (state = initialState, action) => {
       };
     case "RESET_STATE":
       return initialState;
+
+    case "SHARE_SONG":
+      return {
+        ...state,
+        song: action.song,
+      };
+    case "SET_SOCKET":
+      return {
+        ...state,
+        socket: action.socket,
+      };
     default:
       return state;
   }

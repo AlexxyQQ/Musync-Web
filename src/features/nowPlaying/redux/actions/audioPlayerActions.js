@@ -66,3 +66,12 @@ export const setDuration = (duration) => ({
 export const resetState = () => ({
   type: "RESET_STATE",
 });
+
+export const shareSong = (song) => ({
+  type: "SHARE_SONG",
+});
+
+export const setSocket = (socket) => ({
+  type: "SET_SOCKET",
+  socket,
+});

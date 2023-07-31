@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginView from "./features/auth/views/Login";
 import SignupView from "./features/auth/views/Signup";
@@ -9,7 +9,6 @@ import { combineReducers, createStore } from "redux";
 import dashboardReducer from "./features/dashboard/store/reducer/dashboardReducer";
 import authReducer from "./features/auth/store/reducer/authReducer";
 import audioPlayerReducer from "./features/nowPlaying/redux/reducers/audioPlayerReducer";
-
 const rootReducer = combineReducers({
   auth: authReducer,
   dashboard: dashboardReducer,

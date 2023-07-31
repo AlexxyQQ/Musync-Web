@@ -1,16 +1,10 @@
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useEffect, useRef } from "react";
-import {
-  IoPlaySkipBackSharp,
-  IoPlaySkipForwardSharp,
-  IoPlaySharp,
-  IoPauseSharp,
-  IoShuffleSharp,
-  IoShuffleOutline,
-  IoRepeatSharp,
-  IoRepeatOutline,
-} from "react-icons/io5";
-import { BsMusicNoteBeamed } from "react-icons/bs";
+import { ImageBaseURL } from "../../../configs/ApiEndpoints";
+import { Grid } from "@mui/material";
+import ProgressBar from "./ProgressBar";
+import { io } from "socket.io-client";
+import { v4 as uuidv4 } from "uuid";
 
 import {
   setAudioRef,
@@ -20,13 +14,17 @@ import {
   setPlaying,
   setPrevSong,
   setShuffle,
+  setSocket,
+  setSongIndex,
   setSongList,
   setTimeProgress,
 } from "../redux/actions/audioPlayerActions";
-import { ImageBaseURL } from "../../../configs/ApiEndpoints";
-import ProgressBar from "../views/ProgressBar";
+import AudioControls from "./AudioControls";
+import SongDetails from "./SongDetails";
 
-const Player = ({ songs, audioRef }) => {
+const Player = ({ songs, audioRef, loggedUser }) => {
+  const dispatch = useDispatch();
+
   const {
     songList,
     songIndex,
@@ -37,31 +35,46 @@ const Player = ({ songs, audioRef }) => {
     shuffle,
     timeProgress,
     duration,
+    socket,
   } = useSelector((state) => state.ap);
-
-  const dispatch = useDispatch();
 
   const progressBarRef = useRef();
   const playAnimationRef = useRef();
 
   // Initialize the song list and song index when the component mounts
   useEffect(() => {
-    dispatch(setSongList(songs));
+    const s = io("http://localhost:3002", {
+      query: { userEmail: loggedUser.email, uid: uuidv4() },
+    });
     dispatch(setAudioRef(audioRef));
-    progressBarRef.current.max = duration; // Set the progress bar max value
-  }, [songs, audioRef, duration, dispatch]);
-
-  const repeat = useCallback(() => {
-    const currentTime = audioRef.current.currentTime;
-    dispatch(setTimeProgress(currentTime));
-    progressBarRef.current.value = currentTime;
-    progressBarRef.current.style.setProperty(
-      "--range-progress",
-      `${(progressBarRef.current.value / duration) * 100}%`
-    );
-
-    playAnimationRef.current = requestAnimationFrame(repeat);
+    dispatch(setSocket(s));
+    progressBarRef.current.max = duration;
+    return () => {
+      s.disconnect();
+    };
   }, [audioRef, duration, dispatch]);
+
+  useEffect(() => {
+    const handler = (data) => {
+      dispatch(setSongList(data.songList));
+      dispatch(setSongIndex(data.songIndex));
+      dispatch(setTimeProgress(data.timeProgress));
+      dispatch(setDuration(data.duration));
+      dispatch(setPlaying(data.playing));
+      audioRef.current.currentTime = data.timeProgress;
+      progressBarRef.current.max = data.duration;
+      if (data.playing) {
+        audioRef.current.play();
+      } else if (!data.playing && audioRef !== null) {
+        audioRef.current.pause();
+      }
+    };
+    socket?.on("shared-song", handler);
+
+    return () => {
+      socket?.off("shared-song", handler);
+    };
+  }, [socket, dispatch, audioRef, playing, progressBarRef]);
 
   // Play the audio when songIndex changes or when the component mounts
   useEffect(() => {
@@ -71,12 +84,25 @@ const Player = ({ songs, audioRef }) => {
       } else {
         audioRef.current.pause();
       }
-      playAnimationRef.current = requestAnimationFrame(repeat);
+      playAnimationRef.current = requestAnimationFrame(updateProgressBar);
       return () => {
         cancelAnimationFrame(playAnimationRef.current);
       };
     }
-  }, [songIndex, playing, repeat, audioRef]);
+  }, [songIndex, playing, audioRef]);
+
+  // Update the progress bar
+  const updateProgressBar = () => {
+    const currentTime = audioRef.current.currentTime;
+    dispatch(setTimeProgress(currentTime));
+    progressBarRef.current.value = currentTime;
+    progressBarRef.current.style.setProperty(
+      "--range-progress",
+      `${(currentTime / duration) * 100}%`
+    );
+
+    playAnimationRef.current = requestAnimationFrame(updateProgressBar);
+  };
 
   const handlePlayPause = () => {
     dispatch(setPlaying(!playing));
@@ -91,18 +117,38 @@ const Player = ({ songs, audioRef }) => {
   };
 
   const handleShuffle = () => {
-    dispatch(setShuffle());
+    dispatch(setShuffle(!shuffle));
   };
 
   const handleLoop = () => {
-    dispatch(setLoop());
+    dispatch(setLoop(!loop));
+  };
+
+  // handleShare (send the current song to the server)
+  const handleShare = () => {
+    socket.emit("shared", {
+      songList,
+      songIndex,
+      playing,
+      volume,
+      muted,
+      loop,
+      shuffle,
+      timeProgress,
+      duration,
+    });
+
+    if (playing) {
+      audioRef.current.pause();
+    }
   };
 
   // Check if the song exists at the current index before rendering the audio element
   const currentSong = songList[songIndex];
-  const audioSource = currentSong
+  const audioSource = currentSong?.serverUrl
     ? `${ImageBaseURL}${currentSong.serverUrl}`
     : null;
+
   return (
     <div>
       {audioSource && (
@@ -119,55 +165,24 @@ const Player = ({ songs, audioRef }) => {
           loop={loop}
         />
       )}
-      <figure>
-        <div>
-          {currentSong?.albumArtUrl ? (
-            <img
-              src={`${ImageBaseURL}${currentSong?.albumArtUrl}`}
-              alt="audio avatar"
-            />
-          ) : (
-            <div>
-              <span>
-                <BsMusicNoteBeamed />
-              </span>
-            </div>
-          )}
-          <figcaption>
-            <p>{currentSong?.title}</p>
-            <p>{currentSong?.author}</p>
-          </figcaption>
-        </div>
-      </figure>
-      <div>
-        <button onClick={handleShuffle}>
-          {shuffle ? (
-            <IoShuffleSharp />
-          ) : (
-            <IoShuffleOutline style={{ color: "grey" }} />
-          )}{" "}
-        </button>
 
-        <button onClick={handlePrevious}>
-          <IoPlaySkipBackSharp />
-        </button>
-
-        <button onClick={handlePlayPause}>
-          {playing ? <IoPauseSharp /> : <IoPlaySharp />}
-        </button>
-
-        <button onClick={handleNext}>
-          <IoPlaySkipForwardSharp />
-        </button>
-
-        <button onClick={handleLoop}>
-          {loop ? (
-            <IoRepeatSharp />
-          ) : (
-            <IoRepeatOutline style={{ color: "grey" }} />
-          )}
-        </button>
-      </div>
+      <Grid container alignItems="center">
+        <SongDetails currentSong={currentSong} />
+        <AudioControls
+          {...{
+            shuffle,
+            handleShuffle,
+            handlePrevious,
+            handlePlayPause,
+            playing,
+            handleNext,
+            handleLoop,
+            loop,
+            socket,
+            handleShare,
+          }}
+        />
+      </Grid>
       <ProgressBar
         progressBarRef={progressBarRef}
         audioRef={audioRef}

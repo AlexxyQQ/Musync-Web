@@ -1,6 +1,9 @@
+import { Box, Slider, Typography } from "@mui/material";
+
 const ProgressBar = ({ progressBarRef, audioRef, timeProgress, duration }) => {
-  const handleProgressChange = () => {
-    audioRef.current.currentTime = progressBarRef.current.value;
+  const handleProgressChange = (event, newValue) => {
+    audioRef.current.currentTime = newValue;
+    timeProgress = newValue;
   };
 
   const formatTime = (time) => {
@@ -15,16 +18,22 @@ const ProgressBar = ({ progressBarRef, audioRef, timeProgress, duration }) => {
   };
 
   return (
-    <div>
-      <span>{formatTime(timeProgress)}</span>
-      <input
-        type="range"
-        ref={progressBarRef}
-        defaultValue="0"
+    <Box display="flex" alignItems="center" justifyContent="center">
+      <Typography variant="body2">{formatTime(timeProgress)}</Typography>
+
+      <Slider
+        value={timeProgress}
+        variant="determinate"
+        aria-label="Song Progress"
+        min={0}
+        max={duration || 0}
         onChange={handleProgressChange}
+        onChangeCommitted={handleProgressChange}
+        ref={progressBarRef}
+        sx={{ mx: 1, width: 200 }}
       />
-      <span>{formatTime(duration)}</span>
-    </div>
+      <Typography variant="body2">{formatTime(duration)}</Typography>
+    </Box>
   );
 };
 

@@ -13,10 +13,10 @@ import { ImageBaseURL } from "../../../configs/ApiEndpoints";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedSongIndex } from "../store/action/dashboardAction";
 // import NowPlaying from "../../nowplaying/views/NowPlaying";
-import Player from "../../nowPlaying/views/player";
 import {
   setPlaying,
   setSongIndex,
+  setSongList,
 } from "../../nowPlaying/redux/actions/audioPlayerActions";
 import { useRef } from "react";
 
@@ -42,10 +42,9 @@ const formatDate = (dateString) => {
   return date.toLocaleDateString(undefined, options);
 };
 
-const FolderSongsList = ({ folderSongs, selectedFolder }) => {
+const FolderSongsList = ({ folderSongs, selectedFolder, audioRef }) => {
   const { selectedSongIndex } = useSelector((state) => state.dashboard);
   const dispatch = useDispatch();
-  const audioRef = useRef();
 
   // Calculate the total duration in seconds
   const totalDurationInSeconds = folderSongs.reduce(
@@ -101,6 +100,7 @@ const FolderSongsList = ({ folderSongs, selectedFolder }) => {
                   key={index}
                   className="hover:bg-gray-100 transition duration-200 ease-out"
                   onClick={() => {
+                    dispatch(setSongList(folderSongs));
                     dispatch(setSongIndex(index));
                     audioRef.current?.play();
                     dispatch(setPlaying(true));
@@ -132,12 +132,6 @@ const FolderSongsList = ({ folderSongs, selectedFolder }) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <div>
-          <Player songs={folderSongs} audioRef={audioRef} />
-        </div>
-        {/* <div className={musicPlayerHidden}>
-          <NowPlaying index={selectedSongIndex} tracks={folderSongs} />
-        </div> */}
       </div>
     </div>
   );

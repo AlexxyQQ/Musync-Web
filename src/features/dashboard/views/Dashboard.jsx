@@ -11,6 +11,9 @@ import initialLogin from "../services/initilalLoginController";
 import getAllFolderWithSongs from "../services/getAllFolderWithSongs";
 import FolderList from "../views/FolderList";
 import FolderSongsList from "../views/FolderSongsList";
+import Player from "../../nowPlaying/views/player";
+import { useRef } from "react";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 const Dashboard = () => {
   const { loggedUser, allFolderWithSongs, selectedFolder, selectedSongList } =
@@ -18,6 +21,8 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const audioRef = useRef();
 
   const fetchUser = async () => {
     try {
@@ -51,9 +56,19 @@ const Dashboard = () => {
             <FolderSongsList
               folderSongs={selectedSongList}
               selectedFolder={selectedFolder}
+              audioRef={audioRef}
             />
           )}
         </div>
+      </div>
+
+      {/* Fixed container for the player at the bottom */}
+      <div className="fixed bottom-0 left-0 w-full bg-gray-900">
+        <Player
+          songs={selectedSongList}
+          audioRef={audioRef}
+          loggedUser={loggedUser}
+        />
       </div>
     </div>
   );
