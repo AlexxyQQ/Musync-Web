@@ -11,13 +11,21 @@ import initialLogin from "../services/initilalLoginController";
 import getAllFolderWithSongs from "../services/getAllFolderWithSongs";
 import FolderList from "../views/FolderList";
 import FolderSongsList from "../views/FolderSongsList";
-import Player from "../../nowPlaying/views/player";
+import Player from "../../nowPlaying/views/Player";
+import Queue from "../../nowPlaying/views/Queue";
+import HomePage from "../views/HomePage";
 import { useRef } from "react";
-import { ThemeProvider, createTheme } from "@mui/material";
 
 const Dashboard = () => {
-  const { loggedUser, allFolderWithSongs, selectedFolder, selectedSongList } =
-    useSelector((state) => state.dashboard);
+  const {
+    loggedUser,
+    allFolderWithSongs,
+    selectedFolder,
+    selectedSongList,
+    folderSongListTabVisible,
+    queueTabVisible,
+    homePageTabVisible,
+  } = useSelector((state) => state.dashboard);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -52,11 +60,25 @@ const Dashboard = () => {
           />
         </div>
         <div className="h-screen flex-auto w-[60%] bg-gray-900 overflow-y-auto">
-          {selectedFolder && (
+          {homePageTabVisible && (
+            <HomePage
+              foldersWithSongs={allFolderWithSongs}
+              dispatch={dispatch}
+              setFolderSongs={setSelectedSongList}
+            />
+          )}
+          {folderSongListTabVisible && (
             <FolderSongsList
               folderSongs={selectedSongList}
               selectedFolder={selectedFolder}
               audioRef={audioRef}
+            />
+          )}
+          {queueTabVisible && (
+            <Queue
+              audioRef={audioRef}
+              queue={selectedSongList}
+              dispatch={dispatch}
             />
           )}
         </div>

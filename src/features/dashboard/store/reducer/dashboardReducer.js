@@ -5,6 +5,10 @@ const initialState = {
   selectedFolder: "",
   selectedSongList: [],
   selectedSongIndex: null,
+  folderSongListTabVisible: false,
+  queueTabVisible: false,
+  homePageTabVisible: true,
+  foldersWithCover: [],
 };
 
 const dashboardReducer = (state = initialState, action) => {
@@ -38,6 +42,26 @@ const dashboardReducer = (state = initialState, action) => {
       return {
         ...state,
         errors: action.errors,
+      };
+    case "FOLDERS_WITH_COVER":
+      return {
+        ...state,
+        foldersWithCover: action.foldersWithCover,
+      };
+    case "QUEUE_TAB_VISIBLE":
+      return {
+        ...state,
+        queueTabVisible: action.queueTabVisible,
+      };
+    case "FOLDER_SONG_LIST_TAB_VISIBLE":
+      return {
+        ...state,
+        folderSongListTabVisible: action.folderSongListTabVisible,
+      };
+    case "HOME_PAGE_TAB_VISIBLE":
+      return {
+        ...state,
+        homePageTabVisible: action.homePageTabVisible,
       };
     case "RESET_STATE":
       return initialState;

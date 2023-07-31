@@ -1,6 +1,13 @@
 import { Box, Slider, Typography } from "@mui/material";
+import { setTimeProgress } from "../redux/actions/audioPlayerActions";
 
-const ProgressBar = ({ progressBarRef, audioRef, timeProgress, duration }) => {
+const ProgressBar = ({
+  progressBarRef,
+  audioRef,
+  timeProgress,
+  duration,
+  dispatch,
+}) => {
   const handleProgressChange = (event, newValue) => {
     audioRef.current.currentTime = newValue;
     timeProgress = newValue;
@@ -18,22 +25,27 @@ const ProgressBar = ({ progressBarRef, audioRef, timeProgress, duration }) => {
   };
 
   return (
-    <Box display="flex" alignItems="center" justifyContent="center">
-      <Typography variant="body2">{formatTime(timeProgress)}</Typography>
-
-      <Slider
+    <div className="w-full relative rounded-full overflow-hidden flex items-center px-2">
+      <input
+        type="range"
+        className="flex-1 h-1 rounded-full bg-gradient-to-r from-green-500 to-gray-300 appearance-none outline-none"
         value={timeProgress}
-        variant="determinate"
-        aria-label="Song Progress"
-        min={0}
-        max={duration || 0}
-        onChange={handleProgressChange}
-        onChangeCommitted={handleProgressChange}
+        max={duration}
         ref={progressBarRef}
-        sx={{ mx: 1, width: 200 }}
+        onChange={(e) => {
+          dispatch(setTimeProgress(e.target.value));
+          audioRef.current.currentTime = e.target.value;
+        }}
+        style={{
+          background: `linear-gradient(to right, #34D399 0%, #34D399 ${
+            (timeProgress / duration) * 100
+          }%, #D1D5DB ${(timeProgress / duration) * 100}%, #D1D5DB 100%)`,
+        }}
       />
-      <Typography variant="body2">{formatTime(duration)}</Typography>
-    </Box>
+      <span className="text-xs text-gray-400 ml-2">
+        {formatTime(timeProgress)} / {formatTime(duration)}
+      </span>
+    </div>
   );
 };
 

@@ -21,6 +21,11 @@ import {
 } from "../redux/actions/audioPlayerActions";
 import AudioControls from "./AudioControls";
 import SongDetails from "./SongDetails";
+import {
+  setFolderSongListTabVisible,
+  setHomePageTabVisible,
+  setQueueTabVisible,
+} from "../../dashboard/store/action/dashboardAction";
 
 const Player = ({ songs, audioRef, loggedUser }) => {
   const dispatch = useDispatch();
@@ -153,6 +158,7 @@ const Player = ({ songs, audioRef, loggedUser }) => {
     <div>
       {audioSource && (
         <audio
+          className="hidden"
           src={audioSource}
           ref={audioRef}
           onLoadedMetadata={() => {
@@ -166,29 +172,46 @@ const Player = ({ songs, audioRef, loggedUser }) => {
         />
       )}
 
-      <Grid container alignItems="center">
-        <SongDetails currentSong={currentSong} />
-        <AudioControls
-          {...{
-            shuffle,
-            handleShuffle,
-            handlePrevious,
-            handlePlayPause,
-            playing,
-            handleNext,
-            handleLoop,
-            loop,
-            socket,
-            handleShare,
-          }}
-        />
-      </Grid>
-      <ProgressBar
-        progressBarRef={progressBarRef}
-        audioRef={audioRef}
-        timeProgress={timeProgress}
-        duration={duration}
-      />
+      <div className="bg-black text-white h-24 fixed bottom-0 left-0 right-0 z-10">
+        <Grid container className="h-full">
+          <Grid item xs={5} className="flex items-center">
+            <SongDetails currentSong={currentSong} />
+          </Grid>
+          <Grid item xs={5} className="flex items-center justify-start">
+            <AudioControls
+              {...{
+                shuffle,
+                handleShuffle,
+                handlePrevious,
+                handlePlayPause,
+                playing,
+                handleNext,
+                handleLoop,
+                loop,
+              }}
+            />
+          </Grid>
+          <Grid item xs={2} className="flex items-center justify-center">
+            <button
+              className="focus:outline-none"
+              onClick={() => {
+                dispatch(setFolderSongListTabVisible(false));
+                dispatch(setQueueTabVisible(true));
+                dispatch(setHomePageTabVisible(false));
+              }}
+            >
+              Queue
+            </button>
+          </Grid>
+          <ProgressBar
+            progressBarRef={progressBarRef}
+            audioRef={audioRef}
+            timeProgress={timeProgress}
+            duration={duration}
+            dispatch={dispatch}
+          />
+        </Grid>
+      </div>
     </div>
   );
 };
