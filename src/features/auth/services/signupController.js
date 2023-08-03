@@ -5,7 +5,7 @@ import { BaseURL, SignupURL } from "../../../configs/ApiEndpoints";
 import { DefaultHeaders } from "../../../configs/Constants";
 import { LoginRoute } from "../../../configs/Routes";
 
-const SignupFormController = async (formData, navigate) => {
+const SignupFormController = async (formData, navigate, fieldsReset) => {
   try {
     const response = await axios.post(`${BaseURL}${SignupURL}`, formData, {
       headers: DefaultHeaders,
@@ -14,6 +14,7 @@ const SignupFormController = async (formData, navigate) => {
     if (response.status === 200) {
       // Show toast for successful sign-up
       toast.success("Sign up successful!", { autoClose: 1000 });
+      fieldsReset();
       navigate(LoginRoute);
     } else {
       // Show toast for other status codes

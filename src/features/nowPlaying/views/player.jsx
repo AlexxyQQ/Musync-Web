@@ -188,6 +188,7 @@ const Player = ({ songs, audioRef, loggedUser }) => {
                 handleNext,
                 handleLoop,
                 loop,
+                handleShare,
               }}
             />
           </Grid>

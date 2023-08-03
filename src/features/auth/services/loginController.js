@@ -5,7 +5,7 @@ import { BaseURL, LoginURL } from "../../../configs/ApiEndpoints";
 import { DefaultHeaders } from "../../../configs/Constants";
 import { DashboardRoute, LoginRoute } from "../../../configs/Routes";
 
-const LoginFormController = async (formData, navigate) => {
+const LoginFormController = async (formData, navigate, fieldsReset) => {
   try {
     const response = await axios.post(`${BaseURL}${LoginURL}`, formData, {
       headers: DefaultHeaders,
@@ -23,6 +23,7 @@ const LoginFormController = async (formData, navigate) => {
       toast.error("An error occurred while processing your request.", {
         autoClose: 1000,
       });
+      fieldsReset();
       navigate(DashboardRoute);
     }
   } catch (error) {

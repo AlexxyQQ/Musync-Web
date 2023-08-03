@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import LoginView from "./features/auth/views/Login";
-import SignupView from "./features/auth/views/Signup";
+import LoginView from "./features/auth/views/Auth";
+import SignupForm from "./features/auth/views/components/SignupForm";
 import DashboardView from "./features/dashboard/views/Dashboard";
 import { DashboardRoute, LoginRoute, SignupRoute } from "./configs/Routes";
 import { Provider } from "react-redux";
@@ -22,7 +22,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path={LoginRoute} element={<LoginView />} />
-          <Route path={SignupRoute} element={<SignupView />} />
+          <Route path={SignupRoute} element={<SignupForm />} />
           <Route path={DashboardRoute} element={<DashboardView />} />
           <Route path="/" element={<DashboardView />} />
         </Routes>
