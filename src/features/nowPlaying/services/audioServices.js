@@ -42,7 +42,6 @@ export const getPreviousSongIndex = (state) => {
       previousIndex = songList.length - 1;
     }
   }
-  console.log(audioRef);
   return previousIndex;
 };
 

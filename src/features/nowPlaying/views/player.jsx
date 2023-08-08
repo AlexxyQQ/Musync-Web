@@ -61,13 +61,11 @@ const Player = ({ songs, audioRef, loggedUser }) => {
 
   useEffect(() => {
     const handler = (data) => {
+      console.log("asss");
       dispatch(setSongList(data.songList));
       dispatch(setSongIndex(data.songIndex));
-      dispatch(setTimeProgress(data.timeProgress));
-      dispatch(setDuration(data.duration));
-      dispatch(setPlaying(data.playing));
-      audioRef.current.currentTime = data.timeProgress;
-      progressBarRef.current.max = data.duration;
+      audioRef.current.play();
+
       if (data.playing) {
         audioRef.current.play();
       } else if (!data.playing && audioRef !== null) {

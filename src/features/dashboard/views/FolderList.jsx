@@ -1,25 +1,46 @@
 import React from "react";
 import { ImageBaseURL } from "../../../configs/ApiEndpoints";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { Box } from "@mui/material";
 
 const FolderList = ({
   foldersWithSongs,
   setFolderSongs,
   setSelectedFolder,
   dispatch,
+  toggleDrawer,
+  drawer,
 }) => {
   console.log(foldersWithSongs);
   return (
-    <div>
+    <Box>
+      <Button onClick={toggleDrawer}>click</Button>
       {Object.entries(foldersWithSongs).map(([folder, songs]) => (
         <div key={folder}>
-          <div className="flex flex-row">
-            <div className="h-20 w-20 bg-blue-300 rounded-lg">
-              <img
-                className="h-20 w-20 rounded-lg"
-                src={`${ImageBaseURL}/${songs[0].albumArtUrl}`}
-                alt="Folder"
-              />
-            </div>
+          <Card
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              width: drawer ? "80px" : "50px",
+              height: drawer ? "80px" : "50px",
+              my: 1,
+              mx: 2,
+              borderRadius: "10px",
+            }}
+          >
+            <CardMedia
+              component="img"
+              alt="Folder"
+              height="60"
+              width="60"
+              image={`${ImageBaseURL}/${songs[0].albumArtUrl}`}
+            />
+          </Card>
+          {drawer && (
             <button
               onClick={() => {
                 dispatch(setFolderSongs(songs));
@@ -32,10 +53,10 @@ const FolderList = ({
             >
               {folder.split("/")[folder.split("/").length - 1]}
             </button>
-          </div>
+          )}
         </div>
       ))}
-    </div>
+    </Box>
   );
 };
 

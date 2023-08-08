@@ -24,7 +24,6 @@ const LoginView = () => {
   const [showLoginForm, setShowloginForm] = useState(true);
 
   const handleTogglePasswordVisibility = () => {
-    console.log("asss");
     setShowPassword(!showPassword);
   };
   const handleToggleLoginFormVisibility = () => {
