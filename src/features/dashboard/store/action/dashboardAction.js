@@ -3,6 +3,14 @@ export const setUser = (loggedUser) => ({
   loggedUser,
 });
 
+export const setAllUserSongs = (allUserSongs) => ({
+  type: "ALL_USER_SONGS",
+  allUserSongs,
+});
+export const setAllPublicSongs = (allPublicSongs) => ({
+  type: "ALL_PUBLIC_SONGS",
+  allPublicSongs,
+});
 export const setAllFolderWithSongs = (allFolderWithSongs) => ({
   type: "ALL_FOLDER_WITH_SONGS",
   allFolderWithSongs,
@@ -11,6 +19,26 @@ export const setAllFolderWithSongs = (allFolderWithSongs) => ({
 export const setSelectedFolder = (selectedFolder) => ({
   type: "SELECTED_FOLDER",
   selectedFolder,
+});
+
+export const setAllArtistWithSongs = (allArtistWithSongs) => ({
+  type: "ALL_ARTIST_WITH_SONGS",
+  allArtistWithSongs,
+});
+
+export const setSelectedArtist = (selectedArtist) => ({
+  type: "SELECTED_ARTIST",
+  selectedArtist,
+});
+
+export const setAllAlbumWithSongs = (allAlbumWithSongs) => ({
+  type: "ALL_ALBUM_WITH_SONGS",
+  allAlbumWithSongs,
+});
+
+export const setSelectedAlbum = (selectedAlbum) => ({
+  type: "SELECTED_ALBUM",
+  selectedAlbum,
 });
 
 export const setSelectedSongList = (selectedSongList) => ({
@@ -45,6 +73,26 @@ export const setQueueTabVisible = (queueTabVisible) => ({
 export const setHomePageTabVisible = (homePageTabVisible) => ({
   type: "HOME_PAGE_TAB_VISIBLE",
   homePageTabVisible,
+});
+
+export const setBrowsePageTabVisible = (browsePageTabVisible) => ({
+  type: "BROWSE_PAGE_TAB_VISIBLE",
+  browsePageTabVisible,
+});
+
+export const setArtistPageTabVisible = (artistPageTabVisible) => ({
+  type: "ARTIST_PAGE_TAB_VISIBLE",
+  artistPageTabVisible,
+});
+
+export const setAlbumPageTabVisible = (albumPageTabVisible) => ({
+  type: "ALBUM_PAGE_TAB_VISIBLE",
+  albumPageTabVisible,
+});
+
+export const setSearchPageTabVisible = (searchPageTabVisible) => ({
+  type: "SEARCH_PAGE_TAB_VISIBLE",
+  searchPageTabVisible,
 });
 
 export const setFoldersWithCover = (foldersWithCover) => ({

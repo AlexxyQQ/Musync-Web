@@ -115,11 +115,11 @@ const CarouselSlide = () => {
       </Box>
       {/* Buttons */}
       <Box sx={{ my: 3, display: "flex", justifyContent: "center" }}>
-        <Button variant="outlined" onClick={handleNext}>
+        <Button disableRipple variant="outlined" onClick={handleNext}>
           Next
         </Button>
         <Box sx={{ mx: 2 }} />
-        <Button variant="outlined" onClick={handleSkip}>
+        <Button disableRipple variant="outlined" onClick={handleSkip}>
           Skip
         </Button>
       </Box>

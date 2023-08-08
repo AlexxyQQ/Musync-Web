@@ -114,6 +114,7 @@ const SignupForm = ({
           helperText={errors.confirmPassword}
         />
         <Button
+          disableRipple
           type="submit"
           fullWidth
           variant="contained"

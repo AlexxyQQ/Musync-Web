@@ -4,3 +4,7 @@ export const LoginURL = "/users/login";
 export const InitialLoginURL = "/users/loginWithToken/";
 export const SignupURL = "/users/signup/";
 export const GetAllFolderWithSongsURL = "/music/getAllFolderWithSongs/";
+export const GetAllArtistWithSongsURL = "/music/getAllArtistWithSongs/";
+export const GetAllAlbumWithSongsURL = "/music/getAllAlbumWithSongs/";
+export const GetAllUsersSongsURL = "/music/getAllSongs/";
+export const GetAllPublicSongsURL = "/music/getAllPublicSongs/";

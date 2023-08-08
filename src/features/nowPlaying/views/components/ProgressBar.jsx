@@ -1,5 +1,5 @@
 import { Box, Slider, Typography } from "@mui/material";
-import { setTimeProgress } from "../redux/actions/audioPlayerActions";
+import { setTimeProgress } from "../../redux/actions/audioPlayerActions";
 
 const ProgressBar = ({
   progressBarRef,

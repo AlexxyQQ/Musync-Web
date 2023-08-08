@@ -82,7 +82,13 @@ const LoginForm = ({
           ),
         }}
       />
-      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+      <Button
+        disableRipple
+        type="submit"
+        fullWidth
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+      >
         LOGIN
       </Button>
       <Grid container>

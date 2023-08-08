@@ -1,11 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ImageBaseURL } from "../../../configs/ApiEndpoints";
-import { Grid } from "@mui/material";
-import ProgressBar from "./ProgressBar";
+import { Box, Grid } from "@mui/material";
 import { io } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
-
 import {
   setAudioRef,
   setDuration,
@@ -19,13 +17,19 @@ import {
   setSongList,
   setTimeProgress,
 } from "../redux/actions/audioPlayerActions";
-import AudioControls from "./AudioControls";
-import SongDetails from "./SongDetails";
 import {
+  setAlbumPageTabVisible,
+  setArtistPageTabVisible,
+  setBrowsePageTabVisible,
   setFolderSongListTabVisible,
   setHomePageTabVisible,
   setQueueTabVisible,
+  setSearchPageTabVisible,
 } from "../../dashboard/store/action/dashboardAction";
+import SongDetails from "./components/SongDetails";
+import AudioControls from "./components/AudioControls";
+import ProgressBar from "./components/ProgressBar";
+import { BsMusicNoteBeamed } from "react-icons/bs";
 
 const Player = ({ songs, audioRef, loggedUser }) => {
   const dispatch = useDispatch();
@@ -194,9 +198,13 @@ const Player = ({ songs, audioRef, loggedUser }) => {
             <button
               className="focus:outline-none"
               onClick={() => {
+                dispatch(setBrowsePageTabVisible(false));
                 dispatch(setFolderSongListTabVisible(false));
                 dispatch(setQueueTabVisible(true));
                 dispatch(setHomePageTabVisible(false));
+                dispatch(setArtistPageTabVisible(false));
+                dispatch(setAlbumPageTabVisible(false));
+                dispatch(setSearchPageTabVisible(false));
               }}
             >
               Queue

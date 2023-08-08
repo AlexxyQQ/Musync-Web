@@ -1,128 +1,29 @@
-// import React, { useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
-// import {
-//   setAllFolderWithSongs,
-//   setUser,
-//   setSelectedFolder,
-//   setSelectedSongList,
-// } from "../store/action/dashboardAction";
-// import initialLogin from "../services/initilalLoginController";
-// import getAllFolderWithSongs from "../services/getAllFolderWithSongs";
-// import FolderList from "../views/FolderList";
-// import FolderSongsList from "../views/FolderSongsList";
-// import Player from "../../nowPlaying/views/Player";
-// import Queue from "../../nowPlaying/views/Queue";
-// import HomePage from "../views/HomePage";
-// import { useRef } from "react";
-
-// const Dashboard = () => {
-//   const {
-//     loggedUser,
-//     allFolderWithSongs,
-//     selectedFolder,
-//     selectedSongList,
-//     folderSongListTabVisible,
-//     queueTabVisible,
-//     homePageTabVisible,
-//   } = useSelector((state) => state.dashboard);
-//   const navigate = useNavigate();
-
-//   const dispatch = useDispatch();
-
-//   const audioRef = useRef();
-
-//   const fetchUser = async () => {
-//     try {
-//       const user = await initialLogin(navigate);
-//       const apiAllFolderWithSongs = await getAllFolderWithSongs();
-
-//       dispatch(setUser(user));
-//       dispatch(setAllFolderWithSongs(apiAllFolderWithSongs));
-//     } catch (error) {
-//       console.error("Error fetching user:", error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchUser();
-//   }, [dispatch]);
-
-//   return (
-//     <div className="fixed top-0 left-0 w-full h-full bg-fixed text-white">
-//       <div className="flex flex-row">
-//         <div className="h-screen flex-auto bg-gray-800 sticky top-0">
-//           <FolderList
-//             foldersWithSongs={allFolderWithSongs}
-//             setFolderSongs={setSelectedSongList}
-//             setSelectedFolder={setSelectedFolder}
-//             dispatch={dispatch}
-//           />
-//         </div>
-//         <div className="h-screen flex-auto w-[60%] bg-gray-900 overflow-y-auto">
-//           {homePageTabVisible && (
-//             <HomePage
-//               foldersWithSongs={allFolderWithSongs}
-//               dispatch={dispatch}
-//               setFolderSongs={setSelectedSongList}
-//             />
-//           )}
-//           {folderSongListTabVisible && (
-//             <FolderSongsList
-//               folderSongs={selectedSongList}
-//               selectedFolder={selectedFolder}
-//               audioRef={audioRef}
-//             />
-//           )}
-//           {queueTabVisible && (
-//             <Queue
-//               audioRef={audioRef}
-//               queue={selectedSongList}
-//               dispatch={dispatch}
-//             />
-//           )}
-//         </div>
-//       </div>
-
-//       {/* Fixed container for the player at the bottom */}
-//       <div className="fixed bottom-0 left-0 w-full bg-gray-900">
-//         <Player
-//           songs={selectedSongList}
-//           audioRef={audioRef}
-//           loggedUser={loggedUser}
-//         />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Dashboard;
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setAllFolderWithSongs,
   setUser,
-  setSelectedFolder,
-  setSelectedSongList,
+  setAllArtistWithSongs,
+  setAllAlbumWithSongs,
+  setAllPublicSongs,
 } from "../store/action/dashboardAction";
 import initialLogin from "../services/initilalLoginController";
 import getAllFolderWithSongs from "../services/getAllFolderWithSongs";
-import FolderList from "../views/FolderList";
-import FolderSongsList from "../views/FolderSongsList";
+import FolderList from "./components/FolderList";
+import FolderSongsList from "./components/FolderSongsList";
 import Player from "../../nowPlaying/views/Player";
-import Queue from "../../nowPlaying/views/Queue";
-import HomePage from "../views/HomePage";
+import Queue from "../../nowPlaying/views/components/Queue";
+import HomePage from "./components/HomePage";
 import { useRef } from "react";
-import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import Divider from "@mui/material/Divider";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import AppBar from "@mui/material/AppBar";
+import getAllArtistWithSongs from "../services/getAllArtistWithSongs";
+import getAllAlbumWithSongs from "../services/getAllAlbumWithSongs";
+import getAllPublicSongs from "../services/getAllPublicSongs";
+import BrowsePublic from "./components/BrowsePublic";
+import ArtistSongsList from "./components/ArtistPage";
+import AlbumSongsList from "./components/AlbumPage";
+import SearchPage from "./components/SearchPage";
 
 const Dashboard = () => {
   const {
@@ -133,6 +34,13 @@ const Dashboard = () => {
     folderSongListTabVisible,
     queueTabVisible,
     homePageTabVisible,
+    allPublicSongs,
+    allUserSongs,
+    browsePageTabVisible,
+    artistPageTabVisible,
+    albumPageTabVisible,
+    searchPageTabVisible,
+    selectedArtist,
   } = useSelector((state) => state.dashboard);
   const navigate = useNavigate();
 
@@ -140,33 +48,65 @@ const Dashboard = () => {
 
   const audioRef = useRef();
 
-  const [drawer, setDrawer] = useState(true); // State for sidebar open/closed
+  const [drawer, setDrawer] = useState(true); // Set to true if the screen width is greater than or equal to 720
 
   const toggleDrawer = () => {
     setDrawer(!drawer);
+  };
+
+  const handleResize = () => {
+    if (window.innerWidth <= 720) {
+      setDrawer(false);
+    }
   };
 
   const fetchUser = async () => {
     try {
       const user = await initialLogin(navigate);
       const apiAllFolderWithSongs = await getAllFolderWithSongs();
+      const apiAllArtistWithSongs = await getAllArtistWithSongs();
+      const apiAllAlbumWithSongs = await getAllAlbumWithSongs();
+      const apiAllPublicSongs = await getAllPublicSongs();
 
       dispatch(setUser(user));
       dispatch(setAllFolderWithSongs(apiAllFolderWithSongs));
+      dispatch(setAllArtistWithSongs(apiAllArtistWithSongs));
+      dispatch(setAllAlbumWithSongs(apiAllAlbumWithSongs));
+      dispatch(setAllPublicSongs(apiAllPublicSongs));
     } catch (error) {
       console.error("Error fetching user:", error);
     }
   };
 
   useEffect(() => {
+    // Add event listener to handle screen resize
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener when component unmounts
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
     fetchUser();
   }, [dispatch, drawer]);
-
   return (
     <Box
       component="main"
       sx={{
         display: "flex",
+        height: "90vh",
+        "&::-webkit-scrollbar": {
+          width: "8px", // Width of the scrollbar
+        },
+        "&::-webkit-scrollbar-track": {
+          background: "#333", // Color of the track
+        },
+        "&::-webkit-scrollbar-thumb": {
+          background: "#666", // Color of the thumb (indicator)
+        },
+        overflowX: "hidden",
       }}
     >
       <Box
@@ -180,7 +120,6 @@ const Dashboard = () => {
         <Box
           sx={{
             display: "flex",
-            paddingRight: drawer ? 12 : 0,
             backgroundColor: "#212f4d",
             position: "sticky",
             top: 0,
@@ -189,11 +128,11 @@ const Dashboard = () => {
         >
           <FolderList
             foldersWithSongs={allFolderWithSongs}
-            setFolderSongs={setSelectedSongList}
-            setSelectedFolder={setSelectedFolder}
             dispatch={dispatch}
             toggleDrawer={toggleDrawer}
             drawer={drawer}
+            browsePageTabVisible={browsePageTabVisible}
+            searchPageTabVisible={searchPageTabVisible}
           />
         </Box>
 
@@ -208,11 +147,18 @@ const Dashboard = () => {
             backgroundColor: "#111827", // Replace with your desired background color
           }}
         >
+          {browsePageTabVisible && (
+            <BrowsePublic
+              allPublicSongs={allPublicSongs}
+              dispatch={dispatch}
+              audioRef={audioRef}
+            />
+          )}
           {homePageTabVisible && (
             <HomePage
               foldersWithSongs={allFolderWithSongs}
               dispatch={dispatch}
-              setFolderSongs={setSelectedSongList}
+              audioRef={audioRef}
             />
           )}
           {folderSongListTabVisible && (
@@ -226,6 +172,30 @@ const Dashboard = () => {
             <Queue
               audioRef={audioRef}
               queue={selectedSongList}
+              dispatch={dispatch}
+            />
+          )}
+          {artistPageTabVisible && (
+            <ArtistSongsList
+              folderSongs={selectedSongList}
+              selectedFolder={selectedArtist}
+              audioRef={audioRef}
+              dispatch={dispatch}
+            />
+          )}
+          {albumPageTabVisible && (
+            <AlbumSongsList
+              folderSongs={selectedSongList}
+              selectedFolder={selectedArtist}
+              audioRef={audioRef}
+              dispatch={dispatch}
+            />
+          )}
+          {searchPageTabVisible && (
+            <SearchPage
+              allUserSongs={allUserSongs}
+              allPublicSongs={allPublicSongs}
+              audioRef={audioRef}
               dispatch={dispatch}
             />
           )}
