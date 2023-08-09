@@ -22,6 +22,7 @@ const HomePage = ({ foldersWithSongs, dispatch, audioRef }) => {
 
   const getFolders = () => {
     let folders = [];
+    
     Object.entries(foldersWithSongs).map(
       ([folder, songs], index) =>
         (folders = [

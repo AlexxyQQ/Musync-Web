@@ -9,6 +9,7 @@ import { combineReducers, createStore } from "redux";
 import dashboardReducer from "./features/dashboard/store/reducer/dashboardReducer";
 import authReducer from "./features/auth/store/reducer/authReducer";
 import audioPlayerReducer from "./features/nowPlaying/redux/reducers/audioPlayerReducer";
+import Profile from "./features/profile/views/Profile";
 const rootReducer = combineReducers({
   auth: authReducer,
   dashboard: dashboardReducer,
@@ -25,6 +26,7 @@ const App = () => {
           <Route path={SignupRoute} element={<SignupForm />} />
           <Route path={DashboardRoute} element={<DashboardView />} />
           <Route path="/" element={<DashboardView />} />
+          <Route path="/account" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </Provider>

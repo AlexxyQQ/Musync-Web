@@ -8,3 +8,4 @@ export const GetAllArtistWithSongsURL = "/music/getAllArtistWithSongs/";
 export const GetAllAlbumWithSongsURL = "/music/getAllAlbumWithSongs/";
 export const GetAllUsersSongsURL = "/music/getAllSongs/";
 export const GetAllPublicSongsURL = "/music/getAllPublicSongs/";
+export const UploadProfilePicURL = "/users/uploadProfilePic/";

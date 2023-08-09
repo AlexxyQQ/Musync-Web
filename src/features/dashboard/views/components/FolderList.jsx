@@ -7,7 +7,7 @@ import { Box, Typography } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import SearchIcon from "@mui/icons-material/Search";
 import LibraryMusicRoundedIcon from "@mui/icons-material/LibraryMusicRounded";
-import { Language, SortByAlpha } from "@mui/icons-material";
+import { AccountCircle, Language, SortByAlpha } from "@mui/icons-material";
 import {
   setAlbumPageTabVisible,
   setArtistPageTabVisible,
@@ -19,6 +19,9 @@ import {
   setSelectedFolder,
   setSelectedSongList,
 } from "../../store/action/dashboardAction";
+import { AiFillProfile } from "react-icons/ai";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const FolderList = ({
   foldersWithSongs,
@@ -29,7 +32,7 @@ const FolderList = ({
   searchPageTabVisible,
 }) => {
   const [ascendingSort, setAscendingSort] = useState(true); // Track the sorting order
-
+  const { loggedUser } = useSelector((state) => state.dashboard);
   const sortedFolderList = () => {
     // Get an array of keys and sort them alphabetically
     const sortedKeys = Object.keys(foldersWithSongs).sort((a, b) =>
@@ -212,6 +215,26 @@ const FolderList = ({
             }}
           />
           {drawer && <Typography sx={{ ml: 2 }}>Browse</Typography>}
+        </Button>
+        <Button disableRipple sx={{ color: "#fff", mt: 1, mx: 2 }}>
+          {localStorage.getItem("token") && loggedUser.profilePic ? (
+            <img
+              src={
+                loggedUser.profilePic.startsWith("http")
+                  ? loggedUser.profilePic
+                  : `${ImageBaseURL}${loggedUser.profilePic}`
+              }
+              width={drawer ? "28px" : "34px"}
+              height={drawer ? "28px" : "34px"}
+              style={{ borderRadius: "50%" }}
+              alt="Profile"
+            />
+          ) : (
+            <p>No Profile Picture</p>
+          )}
+          <Link to={"/account"}>
+            <Typography sx={{ ml: 2 }}>{loggedUser.username} </Typography>
+          </Link>
         </Button>
       </Box>
       {/* Library */}

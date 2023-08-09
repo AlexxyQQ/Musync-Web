@@ -74,7 +74,7 @@ const LoginView = () => {
           display: "flex",
           flexDirection: "row",
           backgroundColor: "#383838",
-          height: "100vh",
+          height: "100%",
         }}
       >
         <CarouselSlide />

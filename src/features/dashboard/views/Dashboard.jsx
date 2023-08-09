@@ -91,6 +91,7 @@ const Dashboard = () => {
   useEffect(() => {
     fetchUser();
   }, [dispatch, drawer]);
+
   return (
     <Box
       component="main"
@@ -123,7 +124,7 @@ const Dashboard = () => {
             backgroundColor: "#212f4d",
             position: "sticky",
             top: 0,
-            height: "100vh",
+            height: "100%",
           }}
         >
           <FolderList
