@@ -91,14 +91,11 @@ const AllSongsSection = ({ allSongs, dispatch, audioRef }) => {
                   <Typography
                     variant="subtitle1"
                     fontWeight="medium"
-                    color={songIndex === index ? "#ffc800" : "white"}
+                    color={"white"}
                   >
                     {song.title}
                   </Typography>
-                  <Typography
-                    variant="body2"
-                    color={songIndex === index ? "#ffc800" : "white"}
-                  >
+                  <Typography variant="body2" color={"white"}>
                     {`${song.artist} • ${song.album}`}
                   </Typography>
                 </Box>

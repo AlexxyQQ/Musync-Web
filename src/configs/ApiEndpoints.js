@@ -9,3 +9,5 @@ export const GetAllAlbumWithSongsURL = "/music/getAllAlbumWithSongs/";
 export const GetAllUsersSongsURL = "/music/getAllSongs/";
 export const GetAllPublicSongsURL = "/music/getAllPublicSongs/";
 export const UploadProfilePicURL = "/users/uploadProfilePic/";
+export const deleteUserURL = "/users/deleteUser";
+export const deleteSongURL = "/music/deleteSong";

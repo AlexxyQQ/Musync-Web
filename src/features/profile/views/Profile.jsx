@@ -19,6 +19,7 @@ import { setUser } from "../../dashboard/store/action/dashboardAction";
 import { ImageBaseURL } from "../../../configs/ApiEndpoints";
 import uploadProfilePic from "../services/upload_profile_pic";
 import initialLogin from "../../dashboard/services/initilalLoginController";
+import deleteProfile from "../services/delete_profile";
 
 const Profile = () => {
   const { loggedUser } = useSelector((state) => state.dashboard);
@@ -88,7 +89,7 @@ const Profile = () => {
         updateProfilePicture={updateProfilePicture}
       />
       {/* Song Section */}
-      <SongSection />
+      <SongSection navigate={navigate} />
       {/* About Section */}
       <AboutSection />
     </Box>
@@ -150,8 +151,8 @@ const ProfileSection = ({
     setDeleteConfirmationOpen(true);
   };
 
-  const confirmDeleteAccount = () => {
-    localStorage.removeItem("token");
+  const confirmDeleteAccount = async () => {
+    await deleteProfile();
     navigate("/login");
   };
 
@@ -370,7 +371,7 @@ const ProfileSection = ({
   );
 };
 
-const SongSection = () => {
+const SongSection = ({ navigate }) => {
   return (
     <Box
       sx={{
@@ -387,6 +388,7 @@ const SongSection = () => {
     >
       {/* All songs */}
       <Box
+        onClick={() => navigate("/songs")}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -413,7 +415,7 @@ const SongSection = () => {
       </Box>
 
       {/* Public Songs */}
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -437,7 +439,7 @@ const SongSection = () => {
         >
           View and Manage all your public songs
         </Typography>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

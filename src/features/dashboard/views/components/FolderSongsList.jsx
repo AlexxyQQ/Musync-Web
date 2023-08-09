@@ -117,8 +117,7 @@ const FolderSongsList = ({ folderSongs, selectedFolder, audioRef }) => {
                     key={index}
                     className="hover:bg-gray-700 transition duration-200 ease-out "
                     style={{
-                      backgroundColor:
-                        songIndex === index ? "#cc9f00" : "inherit",
+                      backgroundColor: "inherit",
                     }}
                     onClick={() => {
                       dispatch(setSongList(folderSongs));

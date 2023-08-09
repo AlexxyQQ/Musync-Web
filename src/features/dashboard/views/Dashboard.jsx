@@ -7,6 +7,7 @@ import {
   setAllArtistWithSongs,
   setAllAlbumWithSongs,
   setAllPublicSongs,
+  setAllUserSongs,
 } from "../store/action/dashboardAction";
 import initialLogin from "../services/initilalLoginController";
 import getAllFolderWithSongs from "../services/getAllFolderWithSongs";
@@ -24,6 +25,7 @@ import BrowsePublic from "./components/BrowsePublic";
 import ArtistSongsList from "./components/ArtistPage";
 import AlbumSongsList from "./components/AlbumPage";
 import SearchPage from "./components/SearchPage";
+import getAllUserSongs from "../services/getAllUserSongs";
 
 const Dashboard = () => {
   const {

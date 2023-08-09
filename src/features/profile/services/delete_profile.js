@@ -1,29 +1,22 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import {
-  BaseURL,
-  InitialLoginURL,
-  UploadProfilePicURL,
-} from "../../../configs/ApiEndpoints";
-import { LoginRoute } from "../../../configs/Routes";
+import { BaseURL, deleteUserURL } from "../../../configs/ApiEndpoints";
 
-async function uploadProfilePic(selectedPicture) {
+async function deleteProfile() {
   try {
-    const formData = new FormData();
-    formData.append("profilePic", selectedPicture);
     const response = await axios.post(
-      `${BaseURL}${UploadProfilePicURL}`,
-      formData,
+      `${BaseURL}${deleteUserURL}`,
+      {},
       {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
           apisecret: "Apple",
-          authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }
     );
-    console.log(response.data.data);
-    return response.data.data.user;
+
+    localStorage.removeItem("token");
   } catch (error) {
     if (error.response) {
       // The request was made, but the server responded with an error status code
@@ -38,4 +31,4 @@ async function uploadProfilePic(selectedPicture) {
   }
 }
 
-export default uploadProfilePic;
+export default deleteProfile;
