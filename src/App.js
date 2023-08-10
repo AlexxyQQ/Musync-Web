@@ -11,6 +11,7 @@ import authReducer from "./features/auth/store/reducer/authReducer";
 import audioPlayerReducer from "./features/nowPlaying/redux/reducers/audioPlayerReducer";
 import Profile from "./features/profile/views/Profile";
 import ManageAllSongs from "./features/all_songs/views/ManageAllSongs";
+import AdminPannel from "./features/admin/view/AdminPannel";
 const rootReducer = combineReducers({
   auth: authReducer,
   dashboard: dashboardReducer,
@@ -29,6 +30,7 @@ const App = () => {
           <Route path="/" element={<DashboardView />} />
           <Route path="/account" element={<Profile />} />
           <Route path="/songs" element={<ManageAllSongs />} />
+          <Route path="/admin" element={<AdminPannel />} />
         </Routes>
       </BrowserRouter>
     </Provider>

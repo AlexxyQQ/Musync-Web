@@ -3,28 +3,38 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BaseURL, LoginURL } from "../../../configs/ApiEndpoints";
 import { DefaultHeaders } from "../../../configs/Constants";
-import { DashboardRoute, LoginRoute } from "../../../configs/Routes";
+import {
+  AdminPannelRoute,
+  DashboardRoute,
+  LoginRoute,
+} from "../../../configs/Routes";
 
 const LoginFormController = async (formData, navigate, fieldsReset) => {
   try {
     const response = await axios.post(`${BaseURL}${LoginURL}`, formData, {
       headers: DefaultHeaders,
     });
+    if (response.data.data.user.username === "admin") {
+      localStorage.setItem("admintoken", response.data.data.token);
 
-    if (response.status === 200) {
+      window.location.href = AdminPannelRoute;
+    }
+    if (
+      response.status === 200 &&
+      response.data.data.user.username !== "admin"
+    ) {
       // Show toast for successful sign-up
       toast.success("Login successful!", { autoClose: 1000 });
       // save token in local storage
       localStorage.setItem("token", response.data.data.token);
       // redirect to home page
-      window.location.href = DashboardRoute;
+      // window.location.href = DashboardRoute;
     } else {
       // Show toast for other status codes
       toast.error("An error occurred while processing your request.", {
         autoClose: 1000,
       });
       fieldsReset();
-      navigate(DashboardRoute);
     }
   } catch (error) {
     // Handle errors
