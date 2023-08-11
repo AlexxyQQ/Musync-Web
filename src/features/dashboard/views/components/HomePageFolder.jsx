@@ -72,7 +72,6 @@ const FolderSection = ({ dispatch, foldersWithCover }) => {
                 <button
                   className="font-medium text-lg mb-2 ml-4"
                   onClick={() => {
-                    console.log("FolderSection: folder", folder.songs);
                     dispatch(setSelectedSongList(folder.songs));
                     dispatch(
                       setSelectedFolder(

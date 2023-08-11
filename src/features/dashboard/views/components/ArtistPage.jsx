@@ -45,7 +45,6 @@ const ArtistSongsList = ({ folderSongs, selectedFolder, audioRef }) => {
   const { selectedSongIndex } = useSelector((state) => state.dashboard);
   const { songIndex } = useSelector((state) => state.ap);
 
-  console.log("selectedSongIndex", folderSongs);
 
   const dispatch = useDispatch();
 

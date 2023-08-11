@@ -3,7 +3,14 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginView from "./features/auth/views/Auth";
 import SignupForm from "./features/auth/views/components/SignupForm";
 import DashboardView from "./features/dashboard/views/Dashboard";
-import { DashboardRoute, LoginRoute, SignupRoute } from "./configs/Routes";
+import {
+  AdminPannelRoute,
+  DashboardRoute,
+  LoginRoute,
+  ManageAllSongsRoute,
+  ProfileRoute,
+  SignupRoute,
+} from "./configs/Routes";
 import { Provider } from "react-redux";
 import { combineReducers, createStore } from "redux";
 import dashboardReducer from "./features/dashboard/store/reducer/dashboardReducer";
@@ -12,11 +19,12 @@ import audioPlayerReducer from "./features/nowPlaying/redux/reducers/audioPlayer
 import Profile from "./features/profile/views/Profile";
 import ManageAllSongs from "./features/all_songs/views/ManageAllSongs";
 import AdminPannel from "./features/admin/view/AdminPannel";
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   auth: authReducer,
   dashboard: dashboardReducer,
   ap: audioPlayerReducer,
 });
+
 const store = createStore(rootReducer);
 
 const App = () => {
@@ -28,9 +36,9 @@ const App = () => {
           <Route path={SignupRoute} element={<SignupForm />} />
           <Route path={DashboardRoute} element={<DashboardView />} />
           <Route path="/" element={<DashboardView />} />
-          <Route path="/account" element={<Profile />} />
-          <Route path="/songs" element={<ManageAllSongs />} />
-          <Route path="/admin" element={<AdminPannel />} />
+          <Route path={ProfileRoute} element={<Profile />} />
+          <Route path={ManageAllSongsRoute} element={<ManageAllSongs />} />
+          <Route path={AdminPannelRoute} element={<AdminPannel />} />
         </Routes>
       </BrowserRouter>
     </Provider>

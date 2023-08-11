@@ -28,13 +28,12 @@ const LoginFormController = async (formData, navigate, fieldsReset) => {
       // save token in local storage
       localStorage.setItem("token", response.data.data.token);
       // redirect to home page
-      // window.location.href = DashboardRoute;
+      window.location.href = DashboardRoute;
     } else {
       // Show toast for other status codes
       toast.error("An error occurred while processing your request.", {
         autoClose: 1000,
       });
-      fieldsReset();
     }
   } catch (error) {
     // Handle errors

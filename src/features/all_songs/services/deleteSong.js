@@ -21,7 +21,6 @@ const deleteSong = async (songId) => {
         },
       }
     );
-    console.log(response.message);
 
     return response.data.newSong;
   } catch (error) {

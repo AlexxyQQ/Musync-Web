@@ -65,7 +65,6 @@ const Player = ({ songs, audioRef, loggedUser }) => {
 
   useEffect(() => {
     const handler = (data) => {
-      console.log("asss");
       dispatch(setSongList(data.songList));
       dispatch(setSongIndex(data.songIndex));
       audioRef.current.play();

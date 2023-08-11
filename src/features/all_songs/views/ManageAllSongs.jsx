@@ -81,7 +81,6 @@ const ManageAllSongs = () => {
   };
 
   const confirmDeleteAccount = async () => {
-    console.log("sid", sid);
     dispatch(setAllUserSongs(await deleteSong(sid)));
     allUserSongs.sort((a, b) => a.title.localeCompare(b.title));
     setDeleteConfirmationOpen(false);

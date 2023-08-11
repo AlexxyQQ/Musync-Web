@@ -22,7 +22,6 @@ async function uploadProfilePic(selectedPicture) {
         },
       }
     );
-    console.log(response.data.data);
     return response.data.data.user;
   } catch (error) {
     if (error.response) {
